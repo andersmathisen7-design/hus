@@ -3,35 +3,40 @@
 En rask, SEO-optimalisert nettside for 3-roms hageleiligheten i Sandertunet 27, 1400 Ski
 (FINN-kode [477552206](https://www.finn.no/realestate/homes/ad.html?finnkode=477552206)).
 
+Siden ligger på **https://andersmathisen7-design.github.io/hus/**.
+
 Hele nettsiden ligger i `site/` og er ren HTML/CSS med litt JavaScript. Den trenger ingen
 byggesteg og kan legges på hvilken som helst statisk webserver.
 
-## Publisere med GitHub Pages (gratis)
+## Slik publiseres siden
 
-1. Slå sammen denne grenen til `main`.
-2. Gå til **Settings → Pages** i repoet og velg **Source: GitHub Actions**.
-3. Arbeidsflyten `.github/workflows/pages.yml` publiserer `site/` automatisk ved hver endring.
-   Siden blir liggende på `https://andersmathisen7-design.github.io/hus/`.
+GitHub Pages serverer grenen `gh-pages`, som inneholder nøyaktig det som ligger i `site/`.
+Arbeidsflyten `.github/workflows/pages.yml` oppdaterer `gh-pages` automatisk hver gang noe i
+`site/` endres på standardgrenen. Du kan også kjøre den manuelt under **Actions → Publiser
+nettside → Run workflow**.
 
-GitHub Pages krever offentlig repo, eller et betalt GitHub-abonnement for private repoer.
+Hvis siden ikke vises: gå til **Settings → Pages** og velg **Deploy from a branch**, gren
+`gh-pages`, mappe `/ (root)`.
 
 ## Anbefalt: eget domene
 
-Et eget domene (f.eks. `sandertunet27.no`) gir bedre synlighet i søk og en adresse som er lett å
-dele. Slik bytter du:
+Et eget domene (f.eks. `sandertunet27.no`) gir bedre synlighet i søk: Google viser da
+husikonet og navnet «Sandertunet 27» i søkeresultatene, noe som ikke er mulig på en
+undermappe av `github.io`. Slik bytter du:
 
 ```bash
 python3 tools/render.py --site-url https://sandertunet27.no/
 ```
 
-Kommandoen oppdaterer canonical-adresse, delingsbilder, strukturerte data, `sitemap.xml` og
-`robots.txt`. Legg deretter inn domenet under **Settings → Pages → Custom domain**, og pek
-DNS-en til GitHub Pages som beskrevet der.
+Kommandoen oppdaterer canonical-adresse, delingsbilder, strukturerte data, `sitemap.xml`,
+`robots.txt` og lager filen `CNAME`. Legg deretter inn domenet under **Settings → Pages →
+Custom domain**, og pek DNS-en til GitHub Pages som beskrevet der.
 
 ## Få siden inn i Google
 
-1. Legg til siden i [Google Search Console](https://search.google.com/search-console).
-2. Send inn `sitemap.xml` (f.eks. `https://andersmathisen7-design.github.io/hus/sitemap.xml`).
+1. Legg til siden i [Google Search Console](https://search.google.com/search-console)
+   (velg «URL-prefiks» med adressen over).
+2. Send inn `sitemap.xml` (`https://andersmathisen7-design.github.io/hus/sitemap.xml`).
 3. Bruk **URL-inspeksjon → Be om indeksering** på forsiden.
 4. Gjør det samme i [Bing Webmaster Tools](https://www.bing.com/webmasters) (Bing brukes også av
    flere KI-søketjenester).
@@ -48,36 +53,48 @@ derfor sende inn sitemap i Search Console.
   «leilighet nær Ski stasjon».
 - **Eget innhold:** teksten er skrevet på nytt og ikke kopiert fra FINN, slik at Google ikke
   ser siden som et duplikat.
+- **Korrekte nøkkeltall i søk og deling:** beskrivelsen viser BRA-i, antall soverom,
+  energimerke og totalpris, slik bransjen forventer i korte formater.
 - **Strukturerte data (JSON-LD):** `RealEstateListing`, `Apartment` (adresse, koordinater,
-  areal, rom, byggeår, fasiliteter), `Offer` (pris), `Event` (visning), `FAQPage` og
-  `RealEstateAgent`.
+  areal, rom, byggeår, fasiliteter), `Offer` med totalpris og priskomponenter, og megleren som
+  `Organization`. Event- og FAQ-markering er bevisst utelatt: Google viser ikke FAQ-resultater
+  lenger, og Event-resultater støttes ikke for Norge.
 - **Bilder:** 25 bilder i WebP i fire størrelser (`srcset`), beskrivende filnavn og alt-tekster,
   lat innlasting og et bildekart i `sitemap.xml`.
 - **Hastighet:** kritisk CSS inline, egen font (28 KB, `font-display: swap`), hovedbildet
-  forhåndslastes, ingen tredjepartsskript og ingen informasjonskapsler.
+  forhåndslastes, ingen tredjepartsskript og ingen informasjonskapsler. Kartet lastes først når
+  noen klikker på det.
 - **Deling:** Open Graph og Twitter Card med eget bilde på 1200 × 630 piksler, for
   Facebook, Messenger, iMessage, Slack og LinkedIn.
-- **Mobil:** responsiv layout, fast handlingslinje nederst («Ring megler» / «Visning») og
-  bildegalleri med sveip.
+- **Mobil:** responsiv layout, fast handlingslinje nederst og bildegalleri med sveip.
 - **Tilgjengelighet:** semantisk HTML, «hopp til innhold»-lenke, synlig fokus og tastaturstyrt
-  galleri.
-- **Lokal SEO:** geo-metadata, OpenStreetMap-kart, veibeskrivelse og avstander til skoler,
-  stasjon og butikker.
+  galleri. Siden validerer uten feil i W3C-validatoren.
+- **Lokal SEO:** geo-metadata, kart, veibeskrivelse og avstander til skoler, stasjon og butikker.
 
 ## Vedlikehold
 
-- **Etter visningen** skjuler siden visningsinfoen automatisk og ber i stedet folk ta kontakt for
-  privat visning.
-- **Ny visning:** oppdater datoen i `index.html` (seksjonen `#visning`, `Event` i JSON-LD og FAQ)
-  og i `visning.ics`.
+Avslutt hver endring med `python3 tools/render.py --lastmod <dagens dato>`, slik at
+«Sist oppdatert», `dateModified` og `sitemap.xml` får riktig dato.
+
+- **Etter visningen 11. oktober** bytter siden selv knappene «Meld deg på visning» ut med
+  «Avtal visning med megler» / «Salgsoppgave», og FAQ-svaret om visning endres. Det som ikke
+  kan endres automatisk, må endres for hånd: fjern «Visning søndag 11. oktober.» fra
+  `og:description` og `twitter:description` i `index.html`.
+- **Ny visning:** oppdater `data-viewing-end` og teksten i seksjonen `#visning`, datomerket,
+  FAQ-svaret, `og:description` og `visning.ics`.
 - **Når boligen er solgt:** endre `"availability": "https://schema.org/InStock"` til
   `"https://schema.org/SoldOut"` og legg inn en «Solgt»-melding, eller ta siden ned.
 - **Bilder:** `tools/build_images.py` lager alle bildestørrelser fra originalene.
   Alt-tekster og filnavn ligger i `tools/images.json`. Kjør `python3 tools/render.py` etterpå
   for å oppdatere galleriet og sitemap.
 
-## Rettigheter
+## Rettigheter og personvern
 
-Bildene er tatt av meglerens fotograf i forbindelse med salget. Avklar med PrivatMegleren at de
-kan brukes på denne siden. Fonten Fraunces er lisensiert under SIL Open Font License.
-Kartet er © OpenStreetMap-bidragsytere.
+- **Bildene og plantegningen** er laget av meglerens fotograf for salget og er kreditert i
+  bunnteksten. Bekreft med PrivatMegleren Ski & Ås (gjerne på e-post) at de kan brukes på denne
+  siden. Hvis de ønsker en annen kreditering, endre linjen «Foto og plantegning …» i `index.html`.
+- **Fonten** Fraunces er lisensiert under SIL Open Font License; lisensen ligger i
+  `site/assets/fonts/OFL.txt`.
+- **Kartet** er © OpenStreetMap-bidragsytere og lastes først når noen klikker på det.
+- **Personvern:** siden setter ingen informasjonskapsler og har ingen sporing. GitHub logger
+  IP-adresser for sikkerhetsformål, som for alle GitHub Pages-sider.
