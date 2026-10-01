@@ -3,7 +3,7 @@
 En rask, SEO-optimalisert nettside for 3-roms hageleiligheten i Sandertunet 27, 1400 Ski
 (FINN-kode [477552206](https://www.finn.no/realestate/homes/ad.html?finnkode=477552206)).
 
-Siden ligger på **https://andersmathisen7-design.github.io/hus/**.
+Adresse: **https://andersmathisen7-design.github.io/hus/**
 
 Hele nettsiden ligger i `site/` og er ren HTML/CSS med litt JavaScript. Den trenger ingen
 byggesteg og kan legges på hvilken som helst statisk webserver.
@@ -15,13 +15,14 @@ Arbeidsflyten `.github/workflows/pages.yml` oppdaterer `gh-pages` automatisk hve
 `site/` endres på standardgrenen. Du kan også kjøre den manuelt under **Actions → Publiser
 nettside → Run workflow**.
 
-Hvis siden ikke vises: gå til **Settings → Pages** og velg **Deploy from a branch**, gren
-`gh-pages`, mappe `/ (root)`.
+**Første gang (må gjøres én gang av eieren av repoet):** gå til **Settings → Pages**, velg
+**Deploy from a branch**, gren `gh-pages`, mappe `/ (root)`, og trykk **Save**. Etter et par
+minutter ligger siden på adressen over.
 
 ## Anbefalt: eget domene
 
-Et eget domene (f.eks. `sandertunet27.no`) gir bedre synlighet i søk: Google viser da
-husikonet og navnet «Sandertunet 27» i søkeresultatene, noe som ikke er mulig på en
+Et eget domene (f.eks. `sandertunet27.no`) gir bedre synlighet i søk, og gjør det mulig for
+Google å vise husikonet og et eget nettstedsnavn i søkeresultatene – noe som ikke er mulig på en
 undermappe av `github.io`. Slik bytter du:
 
 ```bash
@@ -73,7 +74,7 @@ derfor sende inn sitemap i Search Console.
 
 ## Vedlikehold
 
-Avslutt hver endring med `python3 tools/render.py --lastmod <dagens dato>`, slik at
+Avslutt hver endring med `python3 tools/render.py --lastmod ÅÅÅÅ-MM-DD` (dagens dato), slik at
 «Sist oppdatert», `dateModified` og `sitemap.xml` får riktig dato.
 
 - **Etter visningen 11. oktober** bytter siden selv knappene «Meld deg på visning» ut med
@@ -81,7 +82,7 @@ Avslutt hver endring med `python3 tools/render.py --lastmod <dagens dato>`, slik
   kan endres automatisk, må endres for hånd: fjern «Visning søndag 11. oktober.» fra
   `og:description` og `twitter:description` i `index.html`.
 - **Ny visning:** oppdater `data-viewing-end` og teksten i seksjonen `#visning`, datomerket,
-  FAQ-svaret, `og:description` og `visning.ics`.
+  FAQ-svaret, `og:description`, `twitter:description` og `visning.ics`.
 - **Når boligen er solgt:** endre `"availability": "https://schema.org/InStock"` til
   `"https://schema.org/SoldOut"` og legg inn en «Solgt»-melding, eller ta siden ned.
 - **Bilder:** `tools/build_images.py` lager alle bildestørrelser fra originalene.
@@ -90,9 +91,10 @@ Avslutt hver endring med `python3 tools/render.py --lastmod <dagens dato>`, slik
 
 ## Rettigheter og personvern
 
-- **Bildene og plantegningen** er laget av meglerens fotograf for salget og er kreditert i
-  bunnteksten. Bekreft med PrivatMegleren Ski & Ås (gjerne på e-post) at de kan brukes på denne
-  siden. Hvis de ønsker en annen kreditering, endre linjen «Foto og plantegning …» i `index.html`.
+- **Bildene og plantegningen** kommer fra salgsoppgaven til PrivatMegleren Ski & Ås (bildene er
+  tatt av meglerens fotograf), og kilden er oppgitt i bunnteksten. Få en kort bekreftelse på
+  e-post fra megleren om at fotografen og den som har laget plantegningen godtar bruken her, og
+  spør hvordan de vil krediteres. Endre deretter linjen «Foto og plantegning …» i `index.html`.
 - **Fonten** Fraunces er lisensiert under SIL Open Font License; lisensen ligger i
   `site/assets/fonts/OFL.txt`.
 - **Kartet** er © OpenStreetMap-bidragsytere og lastes først når noen klikker på det.

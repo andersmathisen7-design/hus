@@ -78,8 +78,7 @@ def main():
 
     cfg = json.loads(CONFIG.read_text(encoding="utf-8"))
     if args.lastmod:
-        date.fromisoformat(args.lastmod)
-        cfg["lastmod"] = args.lastmod
+        cfg["lastmod"] = date.fromisoformat(args.lastmod).isoformat()
         CONFIG.write_text(json.dumps(cfg, indent=2) + "\n", encoding="utf-8")
     lastmod = cfg["lastmod"]
     d = date.fromisoformat(lastmod)
@@ -112,7 +111,7 @@ def main():
         page,
         flags=re.S,
     )
-    page = re.sub(r'"dateModified": "[0-9-]+"', f'"dateModified": "{lastmod}"', page)
+    page = re.sub(r'"dateModified": "[^"]*"', f'"dateModified": "{lastmod}"', page)
     page = re.sub(r"Sist oppdatert [0-9]{1,2}\. [a-zæøå]+ [0-9]{4}", f"Sist oppdatert {d.day}. {MONTHS[d.month - 1]} {d.year}", page)
     index.write_text(page, encoding="utf-8")
 
