@@ -1,0 +1,16 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Sandertunet 27//Visning//NO
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+BEGIN:VEVENT
+UID:visning-20261011-sandertunet27-ski
+DTSTAMP:20261001T120000Z
+DTSTART:20261011T140000Z
+DTEND:20261011T144500Z
+SUMMARY:Visning: Sandertunet 27\, Ski
+LOCATION:Sandertunet 27\, 1400 Ski
+DESCRIPTION:Visning av 3-roms hageleilighet. Påmelding: https://privatmegleren.no/130180/visningspaamelding
+URL:https://privatmegleren.no/130180/visningspaamelding
+END:VEVENT
+END:VCALENDAR

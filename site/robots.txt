@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://andersmathisen7-design.github.io/hus/sitemap.xml
